@@ -6,9 +6,6 @@ import discord
 from discord.ext import commands
 from rapidfuzz import fuzz, process
 
-# read token from file
-TOKEN = Path("token").read_text().strip()
-
 IMAGE_PATH = "meme.png"  # hardcoded image
 
 intents = discord.Intents.default()
@@ -124,4 +121,5 @@ async def on_message(message: discord.Message) -> None:
 
 
 def main() -> None:
+    TOKEN = Path("token").read_text().strip()
     bot.run(TOKEN)
