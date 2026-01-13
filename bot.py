@@ -95,7 +95,7 @@ async def on_message(message):
             
         LAST_SENT[ch_id] = now
         try:
-            await message.channel.send(file=discord.File(IMAGE_PATH))
+            await message.reply(file=discord.File(IMAGE_PATH))
             print(f"Sent image to channel {ch_id}")
         except Exception as e:
             print("Failed to send image:", e)
