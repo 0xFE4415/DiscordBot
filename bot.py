@@ -15,7 +15,7 @@ intents.message_content = True  # sees message content
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 LAST_SENT = {}
-RATE_LIMIT_SECONDS = 5
+RATE_LIMIT_SECONDS = 3
 
 @bot.event
 async def on_ready():
@@ -23,25 +23,28 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
+    ch_id = message.channel.id
+    now = time.time()
+    last = LAST_SENT.get(ch_id, 0)
+
     if message.author.bot:
+        return
+    
+    if now - last < RATE_LIMIT_SECONDS:
         return
 
     # Check autism in messages
     if re.search(r"(autis\w*|autyz\w*)", message.content, re.IGNORECASE):
+        LAST_SENT[ch_id] = now
         try:
-            await message.channel.send("Czy ktoś powiedział: autyzm??😳😳")
+            await message.reply("Czy ktoś powiedział: autyzm??😳😳")
+            print(f"Sent image to channel {ch_id}")
         except Exception as e:
             print("Failed to send:", e)
         
     # Check mentions
     if bot.user in message.mentions or message.mention_everyone:
-        ch_id = message.channel.id
-        now = time.time()
-        last = LAST_SENT.get(ch_id, 0)
-        if now - last < RATE_LIMIT_SECONDS:
-            return
         LAST_SENT[ch_id] = now
-
         try:
             await message.channel.send(file=discord.File(IMAGE_PATH))
             print(f"Sent image to channel {ch_id}")
