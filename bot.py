@@ -44,6 +44,12 @@ async def on_message(message):
         
     # Check mentions
     if bot.user in message.mentions or message.mention_everyone:
+        
+        # Ignore replies to the bot's messages
+        if message.reference and message.reference.resolved:
+            if message.reference.resolved.author == bot.user:
+                return
+            
         LAST_SENT[ch_id] = now
         try:
             await message.channel.send(file=discord.File(IMAGE_PATH))
