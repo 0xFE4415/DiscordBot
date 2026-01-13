@@ -92,9 +92,8 @@ async def on_message(message: discord.Message) -> None:
     if now - last < RATE_LIMIT_SECONDS:
         return
 
-    normalized_content = normalize_text(message.content)
     # Check autism in messages
-    if is_autism_variant(normalized_content):
+    if is_autism_variant(message.content):
         LAST_SENT[ch_id] = now
         try:
             await message.reply("Czy ktoś powiedział: autyzm??😳😳")
@@ -121,5 +120,5 @@ async def on_message(message: discord.Message) -> None:
 
 
 def main() -> None:
-    TOKEN = Path("token").read_text().strip()
-    bot.run(TOKEN)
+    token = Path("token").read_text().strip()
+    bot.run(token)
