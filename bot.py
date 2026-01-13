@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import time
+import re
 
 # read token from file
 with open("token", "r") as f:
@@ -9,7 +10,7 @@ with open("token", "r") as f:
 IMAGE_PATH = "meme.png"  # hardcoded image
 
 intents = discord.Intents.default()
-intents.messages = True  # enough for mentions
+intents.message_content = True  # sees message content
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
@@ -25,7 +26,14 @@ async def on_message(message):
     if message.author.bot:
         return
 
-    # Check if bot is mentioned, or @everyone/@here
+    # Check autism in messages
+    if re.search(r"(autis\w*|autyz\w*)", message.content, re.IGNORECASE):
+        try:
+            await message.channel.send("Czy ktoś powiedział: autyzm??😳😳")
+        except Exception as e:
+            print("Failed to send:", e)
+        
+    # Check mentions
     if bot.user in message.mentions or message.mention_everyone:
         ch_id = message.channel.id
         now = time.time()
