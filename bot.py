@@ -38,7 +38,7 @@ async def on_message(message):
         LAST_SENT[ch_id] = now
         try:
             await message.reply("Czy ktoś powiedział: autyzm??😳😳")
-            print(f"Sent image to channel {ch_id}")
+            print(f"Sent response to channel {ch_id}")
         except Exception as e:
             print("Failed to send:", e)
         
