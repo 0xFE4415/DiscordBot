@@ -75,8 +75,9 @@ async def on_message(message):
     if now - last < RATE_LIMIT_SECONDS:
         return
 
+    normalized_content = normalize_text(message.content)
     # Check autism in messages
-    if re.search(r"(autis\w*|autyz\w*)", normalize_text(message.content), re.IGNORECASE):
+    if re.search(r"(autis\w*|autyz\w*)", normalized_content, re.IGNORECASE):
         LAST_SENT[ch_id] = now
         try:
             await message.reply("Czy ktoś powiedział: autyzm??😳😳")
