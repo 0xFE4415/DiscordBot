@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+
+[project]
+name = "discordbot"
+version = "0.1.0"
+description = "Minimal Discord bot project"
+requires-python = ">=3.10"
+dependencies = [
+    "rapidfuzz",
+    "discord"
+]
+
+[project.scripts]
+discordbot = "bot:main"
+
+[project.optional-dependencies]
+test = [
+    "tox",
+    "mypy",
+    "black",
+    "isort",
+    "pylint",
+    "pytest",
+]
+
+[tool.pylint.'MESSAGES CONTROL']
+disable = [
+    "missing-function-docstring",
+    "unspecified-encoding",
+    "missing-module-docstring",
+    "broad-exception-caught",
+]
