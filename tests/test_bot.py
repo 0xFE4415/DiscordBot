@@ -1,4 +1,4 @@
-from bot import is_autism_variant, normalize_text
+from textChecks import is_autism_variant, normalize_text
 
 
 def test_cyrillic_mapping():
