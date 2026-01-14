@@ -2,7 +2,7 @@ import time
 from pathlib import Path
 import discord
 from discord.ext import commands
-from textChecks import is_autism_variant
+from text_checks import is_autism_variant
 
 IMAGE_PATH = "meme.png"
 LAST_SENT: dict[int, float] = {}
