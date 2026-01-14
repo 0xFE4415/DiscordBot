@@ -1,5 +1,7 @@
 import unicodedata
+
 from rapidfuzz import fuzz, process
+
 
 def normalize_text(text: str) -> str:
     cyrillic_to_human_letter_map = {

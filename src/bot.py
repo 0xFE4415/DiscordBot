@@ -1,7 +1,9 @@
 import time
 from pathlib import Path
+
 import discord
 from discord.ext import commands
+
 from text_checks import is_autism_variant
 
 IMAGE_PATH = "meme.png"
