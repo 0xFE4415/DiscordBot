@@ -1,12 +1,10 @@
+import time
+import unicodedata
+from pathlib import Path
+
 import discord
 from discord.ext import commands
-import time
-import re
-import unicodedata
-
-# read token from file
-with open("token", "r") as f:
-    TOKEN = f.read().strip()
+from rapidfuzz import fuzz, process
 
 IMAGE_PATH = "meme.png"  # hardcoded image
 
@@ -15,12 +13,12 @@ intents.message_content = True  # sees message content
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-LAST_SENT = {}
+LAST_SENT: dict[int, float] = {}
 RATE_LIMIT_SECONDS = 3
 
 
-def normalize_text(text):
-    Cyrillic_to_human_letter_map = {
+def normalize_text(text: str) -> str:
+    cyrillic_to_human_letter_map = {
         "а": "a",
         "А": "A",
         "в": "b",
@@ -51,20 +49,39 @@ def normalize_text(text):
         "ο": "o",
         "ρ": "p",
         "ν": "v",
+        "и": "n",
+        "µ": "u",
+        "¡": "i",
+        "+": "t",
+        "|": "i",
     }
 
-    text = text.translate(str.maketrans(Cyrillic_to_human_letter_map))
+    translation_table = str.maketrans(cyrillic_to_human_letter_map)
+    text = text.translate(translation_table)
 
     return unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
 
 
+def is_autism_variant(text: str) -> bool:
+
+    normalized = normalize_text(text)
+
+    cleaned = "".join(c for c in normalized if c.isalpha()).lower()
+    if len(cleaned) < 5:
+        return False
+    targets = ["autism", "autyzm", "autistic", "lubiepociagi"]
+
+    result = process.extractOne(cleaned, targets, scorer=fuzz.partial_ratio)
+    return result is not None and result[1] >= 92
+
+
 @bot.event
-async def on_ready():
+async def on_ready() -> None:
     print(f"Logged in as {bot.user} — ready.")
 
 
 @bot.event
-async def on_message(message):
+async def on_message(message: discord.Message) -> None:
     ch_id = message.channel.id
     now = time.time()
     last = LAST_SENT.get(ch_id, 0)
@@ -75,9 +92,8 @@ async def on_message(message):
     if now - last < RATE_LIMIT_SECONDS:
         return
 
-    normalized_content = normalize_text(message.content)
     # Check autism in messages
-    if re.search(r"(autis\w*|autyz\w*)", normalized_content, re.IGNORECASE):
+    if is_autism_variant(message.content):
         LAST_SENT[ch_id] = now
         try:
             await message.reply("Czy ktoś powiedział: autyzm??😳😳")
@@ -87,12 +103,12 @@ async def on_message(message):
 
     # Check mentions
     if bot.user in message.mentions or message.mention_everyone:
-        
+
         # Ignore replies to the bot's messages
         if message.reference and message.reference.resolved:
-            if message.reference.resolved.author == bot.user:
+            if getattr(message.reference.resolved, "author", None) == bot.user:
                 return
-            
+
         LAST_SENT[ch_id] = now
         try:
             await message.reply(file=discord.File(IMAGE_PATH))
@@ -103,5 +119,6 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-if __name__ == "__main__":
-    bot.run(TOKEN)
+def main() -> None:
+    token = Path("token").read_text().strip()
+    bot.run(token)
