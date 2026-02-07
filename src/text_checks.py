@@ -59,3 +59,16 @@ def is_autism_variant(text: str) -> bool:
 
     result = process.extractOne(cleaned, targets, scorer=fuzz.partial_ratio)
     return result is not None and result[1] >= 92
+
+def is_meow_variant(text: str) -> bool:
+
+    normalized = normalize_text(text)
+
+    cleaned = "".join(c for c in normalized if c.isalpha()).lower()
+    if len(cleaned) < 5:
+        return False
+    targets = ["meow", "miau", "nya"]
+
+    result = process.extractOne(cleaned, targets, scorer=fuzz.partial_ratio)
+    return result is not None and result[1] >= 92
+
