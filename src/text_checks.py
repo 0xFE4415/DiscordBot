@@ -65,7 +65,7 @@ def is_meow_variant(text: str) -> bool:
     normalized = normalize_text(text)
 
     cleaned = "".join(c for c in normalized if c.isalpha()).lower()
-    if len(cleaned) < 5:
+    if len(cleaned) < 2:
         return False
     targets = ["meow", "miau", "nya"]
 
