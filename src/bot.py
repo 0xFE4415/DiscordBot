@@ -41,6 +41,15 @@ async def on_message(message: discord.Message) -> None:
         except Exception as e:
             print("Failed to send:", e)
 
+    # Check for meows
+    if is_meow_variant(message.content):
+        LAST_SENT[ch_id] = now
+        try:
+            await message.reply("meow meow 🐱")
+            print(f"Sent response to channel {ch_id}")
+        except Exception as e:
+            print("Failed to send:", e)
+
     # Check mentions
     if bot.user in message.mentions or message.mention_everyone:
 
