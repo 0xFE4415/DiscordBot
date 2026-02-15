@@ -106,6 +106,6 @@ def is_text_variant(text: str, target: str | list[str], threshold: int = 92, ver
 
     if verbose:
         print(f"DEBUG: {RED}[No Match]{RESET} '{text}' {RED}[for any]{RESET} {targets}")
-        print(f"DEBUG: \t {YELLOW}[best: '{result[0]}' with score {result[1] if result else 'N/A'}]{RESET}")
+        print(f"DEBUG: \t {YELLOW}[best: '{result[0] if result else f'{YELLOW}[None]{RESET}'}' with score {result[1] if result else 'N/A'}]{RESET}")
 
     return False

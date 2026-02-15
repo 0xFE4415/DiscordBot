@@ -33,7 +33,7 @@ disable = [
 ]
 
 [tool.pylint.format]
-max-line-length = 145
+max-line-length = 150
 max-locals = 30
 disable = [
     "trailing-whitespace",
@@ -45,4 +45,4 @@ pythonpath = [
 ]
 
 [tool.black]
-line-length = 145
+line-length = 150
