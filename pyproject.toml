@@ -35,7 +35,7 @@ disable = [
 ]
 
 [tool.pylint.format]
-max-line-length = 120
+max-line-length = 150
 max-locals = 30
 max-branches = 15
 
@@ -45,4 +45,4 @@ pythonpath = [
 ]
 
 [tool.black]
-line-length = 100
+line-length = 150
