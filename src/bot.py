@@ -4,11 +4,14 @@ from pathlib import Path
 import discord
 from discord.ext import commands
 
-from text_checks import is_autism_variant, is_meow_variant
+from text_checks import is_text_variant
 
 IMAGE_PATH = "meme.png"
 LAST_SENT: dict[int, float] = {}
 RATE_LIMIT_SECONDS = 3
+
+AUTISM_VARIANTS = ["autism", "autyzm", "autistic", "lubiepociagi"]
+MEOW_VARIANTS = ["meow", "miau", "nya"]
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -33,7 +36,7 @@ async def on_message(message: discord.Message) -> None:
         return
 
     # Check autism in messages
-    if is_autism_variant(message.content):
+    if is_text_variant(message.content, AUTISM_VARIANTS):
         LAST_SENT[ch_id] = now
         try:
             await message.reply("Czy ktoś powiedział: autyzm??😳😳")
@@ -42,7 +45,7 @@ async def on_message(message: discord.Message) -> None:
             print("Failed to send:", e)
 
     # Check for meows
-    if is_meow_variant(message.content):
+    if is_text_variant(message.content, MEOW_VARIANTS):
         LAST_SENT[ch_id] = now
         try:
             await message.reply("meow meow 🐱")

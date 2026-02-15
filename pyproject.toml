@@ -31,3 +31,18 @@ disable = [
     "missing-module-docstring",
     "broad-exception-caught",
 ]
+
+[tool.pylint.format]
+max-line-length = 145
+max-locals = 30
+disable = [
+    "trailing-whitespace",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
+
+[tool.black]
+line-length = 145
