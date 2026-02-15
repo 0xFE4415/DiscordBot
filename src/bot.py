@@ -23,67 +23,44 @@ class Event:
 
 
 AUTISM_EVENT = Event(
-    triggers=("autism", "autyzm", "autistic", "autystyk", "lubiepociagi"),
+    triggers=("autism", "autyzm", "autistic", "autystyk"),
     reply_pool=(
-        "Autism detected 🧩",
-        "Autyzm vibes 🧠",
-        "Autistic energy 🌈",
-        "Lubiepociagi alert 🚂",
-    ),
-)
-MEOW_EVENT = Event(
-    triggers=("meow", "miau", "nya", "purr", "mrrr"),
-    reply_pool=(
-        "meow meow 🐱",
-        "mrrr~ 🐾",
-        "nya~ 😺",
-        "*purrs* 🐈",
-        "miau miau 🐱‍👤",
-        "kitty detected 🐈‍⬛",
-    ),
-)
-UWU_EVENT = Event(
-    triggers=("uwu", "owo"),
-    reply_pool=(
-        "UwU",
-        "OwO",
-        "UwU what's this?",
-        "OwO *notices you*",
-        "UwU *nuzzles*",
-        ">w<",
-        "( ᵘ ꒳ ᵘ ✼)",
-    ),
-)
-ESTROGEN_EVENT = Event(
-    triggers=("estrogen", "oestrogen", "estradiol", "transka"),
-    reply_pool=(
-        "Estrogen detected 🌸",
-        "Oestrogen vibes 🌷",
-        "Estradiol level: high 💊",
-        "E goes brrr 🏳️‍⚧️",
-    ),
-)
-FEMBOY_EVENT = Event(
-    triggers=("femboj", "femboy", "femboi"),
-    reply_pool=(
-        "Femboy detected 🎀",
-        "Programming socks activated 🧦",
-        "Skirt go spinny 💃",
-        ">w< hewwo femboy",
-        "Thigh highs: equipped ✅",
-    ),
-)
-FURRY_EVENT = Event(
-    triggers=("furry", "fursuit", "fursona"),
-    reply_pool=(
-        "Furry detected 🐺",
-        "OwO *notices your fur*",
-        "Fursona unlocked 🦊",
-        "Awoo~ 🐺",
+        "Czy ktoś powiedział: autyzm??😳😳"
     ),
 )
 
-ALL_EVENTS = (AUTISM_EVENT, MEOW_EVENT, UWU_EVENT, ESTROGEN_EVENT, FEMBOY_EVENT, FURRY_EVENT)
+MEOW_EVENT = Event(
+    triggers=("meow", "miau", "nya", "purr", "mrrr"),
+    reply_pool=(
+        "meow meow 🐱✨",
+        "miau~ 😺💫",
+        "kitty detected 🐈‍⬛👀"
+    ),
+)
+
+UWU_EVENT = Event(
+    triggers=("uwu", "owo"),
+    reply_pool=(
+        "Pls no furry roleplay 🙏😔"
+    ),
+)
+
+FEMBOY_EVENT = Event(
+    triggers=("femboj", "femboy", "femboi"),
+    reply_pool=(
+        "Uuuu ... femboyy ✨"
+    ),
+)
+
+FURRY_EVENT = Event(
+    triggers=("furry", "fursuit", "fursona"),
+    reply_pool=(
+        "Furry detected - commencing ICBM strike.... 🚀💀"
+    ),
+)
+
+
+ALL_EVENTS = (AUTISM_EVENT, MEOW_EVENT, UWU_EVENT, FEMBOY_EVENT, FURRY_EVENT)
 
 intents = discord.Intents.default()
 intents.message_content = True
