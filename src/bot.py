@@ -2,7 +2,9 @@ import random
 import time
 from dataclasses import dataclass
 from pathlib import Path
+from typing import TypedDict
 
+import click
 import discord
 from discord.ext import commands
 
@@ -11,6 +13,13 @@ from text_checks import is_text_variant
 IMAGE_PATH = "meme.png"
 LAST_SENT: dict[int, float] = {}
 RATE_LIMIT_SECONDS = 3
+
+
+class BotConfig(TypedDict):
+    verbose: bool
+
+
+CONFIG: BotConfig = {"verbose": False}
 
 
 @dataclass
@@ -73,7 +82,7 @@ async def on_ready() -> None:
 
 
 async def do_reply(message: discord.Message, event: Event) -> bool:
-    if not is_text_variant(message.content, event.triggers):
+    if not is_text_variant(message.content, event.triggers, verbose=CONFIG["verbose"]):
         return False
 
     try:
@@ -128,6 +137,13 @@ async def on_message(message: discord.Message) -> None:
     await bot.process_commands(message)
 
 
-def main() -> None:
+@click.command()
+@click.option("--verbose", "-v", is_flag=True, help="Enable verbose logging for text matching.")
+def main(verbose: bool) -> None:
+    CONFIG["verbose"] = verbose
+
+    if verbose:
+        print("Verbose mode enabled.")
+
     token = Path("token").read_text().strip()
     bot.run(token)
