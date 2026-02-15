@@ -35,6 +35,7 @@ disable = [
 [tool.pylint.format]
 max-line-length = 150
 max-locals = 30
+max-branches = 15
 
 [tool.pytest.ini_options]
 pythonpath = [
