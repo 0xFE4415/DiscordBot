@@ -33,39 +33,27 @@ class Event:
 
 AUTISM_EVENT = Event(
     triggers=("autism", "autyzm", "autistic", "autystyk"),
-    reply_pool=(
-        "Czy ktoś powiedział: autyzm??😳😳",
-    ),
+    reply_pool=("Czy ktoś powiedział: autyzm??😳😳",),
 )
 
 MEOW_EVENT = Event(
     triggers=("meow", "miau", "nya", "purr", "mrrr"),
-    reply_pool=(
-        "meow meow 🐱✨",
-        "miau~ 😺💫",
-        "kitty detected 🐈‍⬛👀"
-    ),
+    reply_pool=("meow meow 🐱✨", "miau~ 😺💫", "kitty detected 🐈‍⬛👀"),
 )
 
 UWU_EVENT = Event(
     triggers=("uwu", "owo"),
-    reply_pool=(
-        "Pls no furry roleplay 🙏😔",
-    ),
+    reply_pool=("Pls no furry roleplay 🙏😔",),
 )
 
 FEMBOY_EVENT = Event(
     triggers=("femboj", "femboy", "femboi"),
-    reply_pool=(
-        "Uuuu ... femboyy ✨",
-    ),
+    reply_pool=("Uuuu ... femboyy ✨",),
 )
 
 FURRY_EVENT = Event(
     triggers=("furry", "fursuit", "fursona"),
-    reply_pool=(
-        "Furry detected - commencing ICBM strike.... 🚀💀",
-    ),
+    reply_pool=("Furry detected - commencing ICBM strike.... 🚀💀",),
 )
 
 
