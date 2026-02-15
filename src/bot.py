@@ -121,12 +121,12 @@ async def dispatch_event(message: discord.Message) -> bool:
 
 @bot.event
 async def on_message(message: discord.Message) -> None:
+    if message.author.bot:
+        return
+
     ch_id = message.channel.id
     now = time.time()
     last = LAST_SENT.get(ch_id, 0)
-
-    if message.author.bot:
-        return
 
     if now - last < RATE_LIMIT_SECONDS:
         return
