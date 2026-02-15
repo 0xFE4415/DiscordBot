@@ -50,6 +50,7 @@ def test_autism_detection():
     assert is_text_variant("autis-m", AUTISM_VARIANTS, verbose=True) is True
     assert is_text_variant("а  u  t  i s  m", AUTISM_VARIANTS, verbose=True) is True
     assert is_text_variant("а_u-t  i=s+m", AUTISM_VARIANTS, verbose=True) is True
+    assert is_text_variant("miautyzm", AUTISM_VARIANTS, verbose=True) is True
     # assert True is False # Ensure debug prints
 
 def test_meow_detection():
@@ -78,4 +79,5 @@ def test_meow_detection():
     assert is_text_variant("m  3  o = w", MEOW_VARIANTS, verbose=True) is False
     assert is_text_variant("m3ow", MEOW_VARIANTS, verbose=True) is False
     assert is_text_variant("ny4", MEOW_VARIANTS, verbose=True) is False
+    assert is_text_variant("miautyzm", MEOW_VARIANTS, verbose=True) is True
     # assert True is False # Ensure debug prints

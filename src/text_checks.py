@@ -87,7 +87,8 @@ def is_text_variant(
 
         if verbose:
             print(
-                f"DEBUG: \t {BLUE}[Strict Validation]{RESET} '{matched}' {BLUE}[in]{RESET} '{normalized}'"
+                f"DEBUG: \t {BLUE}[Strict Validation]{RESET} "
+                f"'{matched}' {BLUE}[in]{RESET} '{normalized}'"
             )
 
         match_obj = re.search(validation_pattern, normalized, re.IGNORECASE)
@@ -117,7 +118,8 @@ def is_text_variant(
 
             if verbose:
                 print(
-                    f"DEBUG: \t {BLUE}[Matched]{RESET} '{matched}' {BLUE}[in]{RESET} '{normalized}' {BLUE}[by snippet]{RESET} '{snippet}'"
+                    f"DEBUG: \t {BLUE}[Matched]{RESET} '{matched}' {BLUE}[in]{RESET} "
+                    f"'{normalized}' {BLUE}[by snippet]{RESET} '{snippet}'"
                 )
                 print(f"DEBUG: \t {GREEN}[Validation Passed]{RESET}")
 
@@ -130,7 +132,8 @@ def is_text_variant(
     if verbose:
         print(f"DEBUG: {RED}[No Match]{RESET} '{text}' {RED}[for any]{RESET} {targets}")
         print(
-            f"DEBUG: \t {YELLOW}[best: '{result[0] if result else f'{YELLOW}[None]{RESET}'}' with score {result[1] if result else 'N/A'}]{RESET}"
+            f"DEBUG: \t {YELLOW}[best: '{result[0] if result else f'{YELLOW}[None]{RESET}'}'"
+            f"with score {result[1] if result else 'N/A'}]{RESET}"
         )
 
     return False
