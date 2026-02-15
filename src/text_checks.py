@@ -77,13 +77,24 @@ def is_text_variant(text: str, target: str | list[str], threshold: int = 92, ver
 
         validation_pattern = rf"(?<![a-zA-Z0-9]){core_pattern}(?![a-zA-Z0-9])"
         validation_pattern_dyslectic = rf"(?<![a-zA-Z0-9]){core_pattern_dyslectic}(?![a-zA-Z0-9])"
+        validation_pattern_no_left_boundary = rf"{core_pattern}(?![a-zA-Z0-9])"
+        validation_pattern_no_right_boundary = rf"(?<![a-zA-Z0-9]){core_pattern}"
 
         if verbose:
-            print(f"DEBUG: \t {BLUE}[Validation]{RESET} '{matched}' {BLUE}[in]{RESET} '{normalized}'")
+            print(f"DEBUG: \t {BLUE}[Strict Validation]{RESET} '{matched}' {BLUE}[in]{RESET} '{normalized}'")
 
         match_obj = re.search(validation_pattern, normalized, re.IGNORECASE)
 
+        if not match_obj:
+            print(f"DEBUG: \t {YELLOW}[Matching right bound only...]{RESET}")
+            match_obj = re.search(validation_pattern_no_left_boundary, normalized, re.IGNORECASE)
+
+        if not match_obj:
+            print(f"DEBUG: \t {YELLOW}[Matching left bound only...]{RESET}")
+            match_obj = re.search(validation_pattern_no_right_boundary, normalized, re.IGNORECASE)
+
         if not match_obj and len(matched) > 5:
+            print(f"DEBUG: \t {YELLOW}[Matching trimmed...]{RESET}")
             match_obj = re.search(validation_pattern_dyslectic, normalized, re.IGNORECASE)
 
         if match_obj:

@@ -35,9 +35,6 @@ disable = [
 [tool.pylint.format]
 max-line-length = 150
 max-locals = 30
-disable = [
-    "trailing-whitespace",
-]
 
 [tool.pytest.ini_options]
 pythonpath = [
