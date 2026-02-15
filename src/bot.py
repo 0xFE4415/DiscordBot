@@ -1,4 +1,6 @@
+import random
 import time
+from dataclasses import dataclass
 from pathlib import Path
 
 import discord
@@ -10,8 +12,78 @@ IMAGE_PATH = "meme.png"
 LAST_SENT: dict[int, float] = {}
 RATE_LIMIT_SECONDS = 3
 
-AUTISM_VARIANTS = ["autism", "autyzm", "autistic", "lubiepociagi"]
-MEOW_VARIANTS = ["meow", "miau", "nya"]
+
+@dataclass
+class Event:
+    triggers: tuple[str, ...]
+    reply_pool: tuple[str, ...]
+
+    def random_reply(self) -> str:
+        return random.choice(self.reply_pool)
+
+
+AUTISM_EVENT = Event(
+    triggers=("autism", "autyzm", "autistic", "autystyk", "lubiepociagi"),
+    reply_pool=(
+        "Autism detected 🧩",
+        "Autyzm vibes 🧠",
+        "Autistic energy 🌈",
+        "Lubiepociagi alert 🚂",
+    ),
+)
+MEOW_EVENT = Event(
+    triggers=("meow", "miau", "nya", "purr", "mrrr"),
+    reply_pool=(
+        "meow meow 🐱",
+        "mrrr~ 🐾",
+        "nya~ 😺",
+        "*purrs* 🐈",
+        "miau miau 🐱‍👤",
+        "kitty detected 🐈‍⬛",
+    ),
+)
+UWU_EVENT = Event(
+    triggers=("uwu", "owo"),
+    reply_pool=(
+        "UwU",
+        "OwO",
+        "UwU what's this?",
+        "OwO *notices you*",
+        "UwU *nuzzles*",
+        ">w<",
+        "( ᵘ ꒳ ᵘ ✼)",
+    ),
+)
+ESTROGEN_EVENT = Event(
+    triggers=("estrogen", "oestrogen", "estradiol", "transka"),
+    reply_pool=(
+        "Estrogen detected 🌸",
+        "Oestrogen vibes 🌷",
+        "Estradiol level: high 💊",
+        "E goes brrr 🏳️‍⚧️",
+    ),
+)
+FEMBOY_EVENT = Event(
+    triggers=("femboj", "femboy", "femboi"),
+    reply_pool=(
+        "Femboy detected 🎀",
+        "Programming socks activated 🧦",
+        "Skirt go spinny 💃",
+        ">w< hewwo femboy",
+        "Thigh highs: equipped ✅",
+    ),
+)
+FURRY_EVENT = Event(
+    triggers=("furry", "fursuit", "fursona"),
+    reply_pool=(
+        "Furry detected 🐺",
+        "OwO *notices your fur*",
+        "Fursona unlocked 🦊",
+        "Awoo~ 🐺",
+    ),
+)
+
+ALL_EVENTS = (AUTISM_EVENT, MEOW_EVENT, UWU_EVENT, ESTROGEN_EVENT, FEMBOY_EVENT, FURRY_EVENT)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -21,6 +93,30 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 @bot.event
 async def on_ready() -> None:
     print(f"Logged in as {bot.user} — ready.")
+
+
+async def do_reply(message: discord.Message, event: Event) -> bool:
+    if not is_text_variant(message.content, event.triggers):
+        return False
+
+    try:
+        await message.reply(event.random_reply())
+        print(f"Sent response to channel {message.channel.id}")
+        LAST_SENT[message.channel.id] = time.time()
+        return True
+    except Exception as e:
+        print("Failed to send:", e)
+        return False
+
+
+async def dispatch_event(message: discord.Message) -> bool:
+    shuffled_events = random.sample(ALL_EVENTS, len(ALL_EVENTS))
+
+    for event in shuffled_events:
+        if await do_reply(message, event):
+            return True
+
+    return False
 
 
 @bot.event
@@ -35,23 +131,7 @@ async def on_message(message: discord.Message) -> None:
     if now - last < RATE_LIMIT_SECONDS:
         return
 
-    # Check autism in messages
-    if is_text_variant(message.content, AUTISM_VARIANTS):
-        LAST_SENT[ch_id] = now
-        try:
-            await message.reply("Czy ktoś powiedział: autyzm??😳😳")
-            print(f"Sent response to channel {ch_id}")
-        except Exception as e:
-            print("Failed to send:", e)
-
-    # Check for meows
-    if is_text_variant(message.content, MEOW_VARIANTS):
-        LAST_SENT[ch_id] = now
-        try:
-            await message.reply("meow meow 🐱")
-            print(f"Sent response to channel {ch_id}")
-        except Exception as e:
-            print("Failed to send:", e)
+    await dispatch_event(message)
 
     # Check mentions
     if bot.user in message.mentions or message.mention_everyone:
