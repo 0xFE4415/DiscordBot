@@ -1,5 +1,6 @@
 import re
 import unicodedata
+from collections.abc import Sequence
 
 from rapidfuzz import fuzz, process
 
@@ -54,7 +55,9 @@ def normalize_text(text: str) -> str:
     return unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
 
 
-def is_text_variant(text: str, target: str | list[str], threshold: int = 92, verbose: bool = False) -> bool:
+def is_text_variant(
+    text: str, target: str | Sequence[str], threshold: int = 92, verbose: bool = False
+) -> bool:
 
     if isinstance(target, str):
         targets = [t.lower() for t in [target]]
@@ -68,7 +71,9 @@ def is_text_variant(text: str, target: str | list[str], threshold: int = 92, ver
     if result and result[1] >= threshold:
         if verbose:
             print(f"DEBUG: {GREEN}[Match]{RESET} '{text}' {RED}[for any]{RESET} {targets}")
-            print(f"DEBUG: \t {YELLOW}[best: '{result[0]}' with score {result[1] if result else 'N/A'}]{RESET}")
+            print(
+                f"DEBUG: \t {YELLOW}[best: '{result[0]}' with score {result[1] if result else 'N/A'}]{RESET}"
+            )
 
         matched = result[0]
 
@@ -81,7 +86,10 @@ def is_text_variant(text: str, target: str | list[str], threshold: int = 92, ver
         validation_pattern_no_right_boundary = rf"(?<![a-zA-Z0-9]){core_pattern}"
 
         if verbose:
-            print(f"DEBUG: \t {BLUE}[Strict Validation]{RESET} '{matched}' {BLUE}[in]{RESET} '{normalized}'")
+            print(
+                f"DEBUG: \t {BLUE}[Strict Validation]{RESET} "
+                f"'{matched}' {BLUE}[in]{RESET} '{normalized}'"
+            )
 
         match_obj = re.search(validation_pattern, normalized, re.IGNORECASE)
 
@@ -109,7 +117,10 @@ def is_text_variant(text: str, target: str | list[str], threshold: int = 92, ver
             snippet = normalized[debug_start:debug_end]
 
             if verbose:
-                print(f"DEBUG: \t {BLUE}[Matched]{RESET} '{matched}' {BLUE}[in]{RESET} '{normalized}' {BLUE}[by snippet]{RESET} '{snippet}'")
+                print(
+                    f"DEBUG: \t {BLUE}[Matched]{RESET} '{matched}' {BLUE}[in]{RESET} "
+                    f"'{normalized}' {BLUE}[by snippet]{RESET} '{snippet}'"
+                )
                 print(f"DEBUG: \t {GREEN}[Validation Passed]{RESET}")
 
             return True
@@ -120,6 +131,9 @@ def is_text_variant(text: str, target: str | list[str], threshold: int = 92, ver
 
     if verbose:
         print(f"DEBUG: {RED}[No Match]{RESET} '{text}' {RED}[for any]{RESET} {targets}")
-        print(f"DEBUG: \t {YELLOW}[best: '{result[0] if result else f'{YELLOW}[None]{RESET}'}' with score {result[1] if result else 'N/A'}]{RESET}")
+        print(
+            f"DEBUG: \t {YELLOW}[best: '{result[0] if result else f'{YELLOW}[None]{RESET}'}'"
+            f"with score {result[1] if result else 'N/A'}]{RESET}"
+        )
 
     return False
