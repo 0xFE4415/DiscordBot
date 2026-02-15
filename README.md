@@ -1,4 +1,4 @@
-# pls dont use this
+# Simple respond-to-text bot
 
 
 ## Install and Run
