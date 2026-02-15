@@ -64,14 +64,16 @@ async def do_reply(message: discord.Message, event: Event) -> bool:
     if not is_text_variant(message.content, event.triggers, verbose=CONFIG["verbose"]):
         return False
 
-    try:
-        await message.reply(event.random_reply())
-        print(f"Sent response to channel {message.channel.id}")
-        LAST_SENT[message.channel.id] = time.time()
-        return True
-    except Exception as e:
-        print("Failed to send:", e)
-        return False
+    if message.channel.id == ANNOYING_CHANNEL_ID:
+        try:
+            await message.reply(event.random_reply())
+            print(f"Sent response to channel {message.channel.id}")
+            LAST_SENT[message.channel.id] = time.time()
+            return True
+        except Exception as e:
+            print("Failed to send:", e)
+            return False
+    return False
 
 
 async def dispatch_event(message: discord.Message) -> bool:
