@@ -1,5 +1,5 @@
-import unicodedata
 import re
+import unicodedata
 
 from rapidfuzz import fuzz, process
 
